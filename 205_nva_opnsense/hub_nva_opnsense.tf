@@ -1,12 +1,12 @@
-resource "azurerm_public_ip" "pip-vm-nva" {
-  name                = "pip-vm-nva"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  allocation_method   = "Static"
-  sku                 = "Standard"
-  domain_name_label   = "opnsense"
-  # zones               = [1]
-}
+# resource "azurerm_public_ip" "pip-vm-nva" {
+#   name                = "pip-vm-nva"
+#   resource_group_name = azurerm_resource_group.rg.name
+#   location            = azurerm_resource_group.rg.location
+#   allocation_method   = "Static"
+#   sku                 = "Standard"
+#   domain_name_label   = "opnsense"
+#   # zones               = [1]
+# }
 
 resource "azurerm_network_interface" "nic-vm-nva-untrusted" {
   name                  = "nic-vm-nva-untrusted"
@@ -18,7 +18,7 @@ resource "azurerm_network_interface" "nic-vm-nva-untrusted" {
     name                          = "untrusted"
     subnet_id                     = azurerm_subnet.snet-untrusted.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.pip-vm-nva.id
+    # public_ip_address_id          = azurerm_public_ip.pip-vm-nva.id
   }
 }
 
@@ -39,12 +39,12 @@ resource "azurerm_linux_virtual_machine" "vm-nva" {
   name                            = "vm-nva-opnsense"
   resource_group_name             = azurerm_resource_group.rg.name
   location                        = azurerm_resource_group.rg.location
-  size                            = "Standard_D4ads_v6" # "Standard_B2s" # "Standard_D96ads_v5" #
+  size                            = "Standard_D4s_v3" # "Standard_D4ads_v6" # "Standard_B2s" # "Standard_D96ads_v5" #
   disable_password_authentication = false
   admin_username                  = "azureuser"
   admin_password                  = "@Aa123456789"
   network_interface_ids           = [azurerm_network_interface.nic-vm-nva-untrusted.id, azurerm_network_interface.nic-vm-nva-trusted.id]
-  disk_controller_type            = "NVMe" # "SCSI" # "IDE" # "SCSI" is the default value. "NVMe" is only supported for Ephemeral OS Disk.
+  disk_controller_type            = "SCSI" # "SCSI" # "IDE" # "SCSI" is the default value. "NVMe" is only supported for Ephemeral OS Disk.
   zone                            = 1
   # priority                        = "Spot"
   # eviction_policy                 = "Delete" # "Deallocate" # With Spot, there's no option of Stop-Deallocate for Ephemeral VMs, rather users need to Delete instead of deallocating them.
@@ -54,11 +54,6 @@ resource "azurerm_linux_virtual_machine" "vm-nva" {
     caching              = "ReadOnly"        # "ReadWrite" # None, ReadOnly and ReadWrite.
     storage_account_type = "StandardSSD_LRS" # "Standard_LRS"
     disk_size_gb         = 128
-
-    diff_disk_settings {
-      option    = "Local"    # Specifies the Ephemeral Disk Settings for the OS Disk. At this time the only possible value is Local.
-      placement = "NvmeDisk" # "ResourceDisk" # "CacheDisk" # Specifies the Ephemeral Disk Placement for the OS Disk. NvmeDisk can only be used for v6 VMs
-    }
   }
 
   source_image_reference {
@@ -93,7 +88,8 @@ resource "azurerm_linux_virtual_machine" "vm-nva" {
 }
 
 output "vm_nva_public_ip" {
-  value = azurerm_public_ip.pip-vm-nva.ip_address
+#  value = azurerm_public_ip.pip-vm-nva.ip_address
+  value = azurerm_network_interface.nic-vm-nva-untrusted.private_ip_address
 }
 
 output "vm_nva_private_ip_trusted" {
