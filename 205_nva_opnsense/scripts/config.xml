@@ -212,7 +212,7 @@
       <landing_page/>
       <comment/>
       <email/>
-      <apikeys/>
+      <apikeys>V2iqajAhsKralKPOaA5YAw+CWTdx0TDKEYzu6oRqBRlyuN1xvhsMXeCABpgmPX4tPcR5o9TSVUPQI6+Y|$6$$gfZnV3sYfdmivpPCqIi1ArWyi6vy5qxtBh2fR2shxQ0hEqDvfbEUfPnq1WhkTrPwjA.Q6Dt/dbnf8zoOFju9v1</apikeys>/>
       <priv/>
       <language/>
       <descr>System Administrator</descr>
@@ -1591,9 +1591,32 @@
   </hasync>
   <openvpn/>
   <staticroutes version="1.0.0" persisted_at="1754854082.92">
-    <route/>
+    <route uuid="53047edf-2270-46eb-964d-79337716b644">
+      <network>WORKLOAD_NETWORK</network>
+    <gateway>LAN_GW</gateway>
+    <descr>workload</descr>
+    <disabled>0</disabled>
+    </route>
   </staticroutes>
-  <virtualip version="1.0.1" persisted_at="1754854082.97"/>
+  <virtualip version="1.0.1" persisted_at="1754854082.97">
+    <vip uuid="113b2452-2cd6-4f68-88dd-62248ee08d02">
+    <interface>wan</interface>
+      <mode>ipalias</mode>
+      <subnet>WAN_VIRTUAL_IP</subnet>
+    <subnet_bits>WAN_VIRTUAL_IP_MASK</subnet_bits>
+    <gateway/>
+    <noexpand>0</noexpand>
+      <nobind>0</nobind>
+      <password/>
+    <vhid/>
+    <advbase>1</advbase>
+    <advskew>0</advskew>
+      <peer/>
+      <peer6/>
+    <nosync>0</nosync>
+    <descr/>
+    </vip>    
+  </virtualip>/>
   <gifs version="1.0.0" persisted_at="1754854082.97">
     <gif/>
   </gifs>
