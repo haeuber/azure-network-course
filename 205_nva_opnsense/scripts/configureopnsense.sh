@@ -7,8 +7,6 @@
 # $4 = Public IP of OpnSense
 # $5 = Virtual IP CIDR
 # $6 = Workload Network CIDR
-# $5 = Virtual IP CIDR
-# $6 = Workload Network CIDR
 
 fetch $1config.xml
 
