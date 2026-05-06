@@ -7,14 +7,17 @@
 # $4 = Public IP of OpnSense
 # $5 = Virtual IP CIDR
 # $6 = Workload Network CIDR
+# $7 = Workload Virtual IP
 
 fetch $1config.xml
 
 sed -i "" "s|GATEWAY_PRIVATE_IP|$3|" config.xml
 sed -i "" "s|OPNSENSE_SERVER_PUBLIC_IP|$4|" config.xml
-sed -i "" "s|WAN_VIRTUAL_IP_MASK|${5#*/}|" config.xml
+# sed -i "" "s|WAN_VIRTUAL_IP_MASK|${5#*/}|" config.xml
 sed -i "" "s|WAN_VIRTUAL_IP|${5%/*}|" config.xml
 sed -i "" "s|WORKLOAD_NETWORK|$6|" config.xml
+sed -i "" "s|WORKLOAD_VIRTUAL_IP|$7|" config.xml
+
 cp config.xml /usr/local/etc/config.xml
 
 # Download OPNSense Bootstrap and Permit Root Remote Login

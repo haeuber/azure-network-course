@@ -1,1 +1,2 @@
 az vm image terms accept --urn thefreebsdfoundation:freebsd-14_1:14_1-release-amd64-gen2-zfs:14.1.0 -o none
+az vm image terms accept --urn thefreebsdfoundation:freebsd-14_3:14_3-release-amd64-gen2-zfs:14.3.0 -o none

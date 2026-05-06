@@ -46,6 +46,21 @@ resource "azurerm_network_security_rule" "allow-inbound-dns" {
   destination_port_range      = "53"
 }
 
+
+resource "azurerm_network_security_rule" "allow-inbound-dnat" {
+  network_security_group_name = azurerm_network_security_group.nsg-vm.name
+  resource_group_name         = azurerm_network_security_group.nsg-vm.resource_group_name
+  name                        = "allow-inbound-dnat"
+  access                      = "Allow"
+  priority                    = 110
+  direction                   = "Inbound"
+  protocol                    = "*"
+  source_address_prefix       = "VirtualNetwork"
+  source_port_range           = "*"
+  destination_address_prefix  = var.address_space_wan[0]
+  destination_port_range      = "*"
+}
+
 # resource "azurerm_network_security_rule" "allow-all-inbound" {
 #   network_security_group_name = azurerm_network_security_group.nsg-vm.name
 #   resource_group_name         = azurerm_network_security_group.nsg-vm.resource_group_name
