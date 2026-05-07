@@ -353,6 +353,22 @@
       <type>none</type>
       <virtual>1</virtual>
     </lo0>
+    <wireguard>
+      <internal_dynamic>1</internal_dynamic>
+      <descr>WireGuard (Group)</descr>
+      <if>wireguard</if>
+      <virtual>1</virtual>
+      <enable>1</enable>
+      <type>group</type>
+      <networks/>
+    </wireguard>
+    <opt1>
+      <if>wg0</if>
+      <descr>WireguardInstance</descr>
+      <enable>1</enable>
+      <lock>1</lock>
+      <spoofmac/>
+    </opt1>
   </interfaces>
   <snmpd>
     <syslocation/>
@@ -408,6 +424,24 @@
       </source>
       <destination>
         <any>1</any>
+      </destination>
+      <log>1</log>
+    </rule>
+    <rule uuid="66b4ac7f-6533-4d5e-973b-fee22b13064a">
+      <type>pass</type>
+      <interface>wan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allowing VPN clients to access the OPNsense WireGuard Server</descr>
+      <direction>in</direction>
+      <quick>1</quick>
+      <protocol>udp</protocol>
+      <source>
+        <network>opt1</network>
+      </source>
+      <destination>
+        <network>wan</network>
+        <port>51820</port>
       </destination>
       <log>1</log>
     </rule>
@@ -480,6 +514,38 @@
       <statetype>keep state</statetype>
       <descr>allow-all-out-lan</descr>
       <direction>out</direction>
+      <quick>1</quick>
+      <source>
+        <any>1</any>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <log>1</log>
+    </rule>
+    <rule uuid="454682b4-7fbf-457e-96d0-61a052a21272">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Allow WireGuard clients access to all destinations</descr>
+      <direction>in</direction>
+      <log>1</log>
+      <quick>1</quick>
+      <source>
+        <network>opt1</network>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+    </rule>
+    <rule uuid="dd56c00b-12bf-45a8-9856-f46440df30ff">
+      <type>pass</type>
+      <interface>opt1</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>test-allowall-wireguardinstance</descr>
+      <direction>in</direction>
       <quick>1</quick>
       <source>
         <any>1</any>
@@ -732,13 +798,63 @@
     </Firewall>
     <wireguard>
       <client version="1.0.0" persisted_at="1759300672.83">
-        <clients/>
+        <clients>
+          <client uuid="5f1b7610-d465-4174-8a3c-f770da864c84">
+            <enabled>1</enabled>
+            <name>LaptopPeer</name>
+            <pubkey>+CV9zx1NgQPF/vNL1teDQ8mbkzPuCNp5KdnBb+yTHHo=</pubkey>
+            <psk/>
+            <tunneladdress>0.0.0.0/0</tunneladdress>
+            <serveraddress>OPNSENSE_SERVER_PUBLIC_IP</serveraddress>
+            <serverport>51820</serverport>
+            <keepalive/>
+          </client>
+          <client uuid="cf4ed032-d2cc-4fa8-ba57-424e32691294">
+            <enabled>1</enabled>
+            <name>HomePeer01</name>
+            <pubkey>wsrw7YLe25S6QfFJFyfXlp6WNtu+A1cTvrB8ac0e1DY=</pubkey>
+            <psk/>
+            <tunneladdress>172.16.0.2/32</tunneladdress>
+            <serveraddress/>
+            <serverport/>
+            <keepalive>25</keepalive>
+          </client>
+          <client uuid="f4e3a508-296a-4439-92b1-93470ef818c5">
+            <enabled>1</enabled>
+            <name>PhonePeer001</name>
+            <pubkey>5oCP816KWBscJjEsLovq06/iaJ+Fp6TkKTX1srK0LTM=</pubkey>
+            <psk/>
+            <tunneladdress>172.16.0.3/32</tunneladdress>
+            <serveraddress/>
+            <serverport/>
+            <keepalive/>
+          </client>
+        </clients>
       </client>
       <general version="0.0.1" persisted_at="1759300674.23">
         <enabled>1</enabled>
       </general>
       <server version="1.0.1" persisted_at="1778067829.77" description="WireGuard instance configuration">
-        <servers/>
+        <servers>
+          <server uuid="3268cd60-b86e-4248-8b6f-821d6f70bb32">
+            <enabled>1</enabled>
+            <name>WireguardInstance</name>
+            <instance>0</instance>
+            <pubkey>y/j7Plg2DVOMj+XQiYhkKptA3EHIYfLCkgmY0xr8wlg=</pubkey>
+            <privkey>UP/c8MzhetCxlbKer8fbF/SnFrvJijSjuI+f4+I0u0Q=</privkey>
+            <port>51820</port>
+            <mtu/>
+            <dns/>
+            <tunneladdress>172.16.0.1/24</tunneladdress>
+            <disableroutes>0</disableroutes>
+            <gateway/>
+            <carp_depend_on/>
+            <peers>5f1b7610-d465-4174-8a3c-f770da864c84,cf4ed032-d2cc-4fa8-ba57-424e32691294,f4e3a508-296a-4439-92b1-93470ef818c5</peers>
+            <debug>0</debug>
+            <endpoint>135.225.126.162:51820</endpoint>
+            <peer_dns>135.225.126.162</peer_dns>
+          </server>
+        </servers>
       </server>
     </wireguard>
     <unboundplus version="1.0.15" persisted_at="1778067828.53" description="Unbound configuration">
